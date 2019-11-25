@@ -22,11 +22,9 @@ app.get("/api/notes", function(req, res) {
 });
 
 app.post("/api/notes", function(req, res) {
-  var newNote = req.body;
-
-  console.log(newNote);
-
-  res.send(newNote);
+  var saveNote = req.body;
+  console.log(req.body);
+  res.json(saveNote);
 });
 
 app.delete("/api/notes/:id", function(req, res) {
