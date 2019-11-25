@@ -21,28 +21,12 @@ app.get("/api/notes", function(req, res) {
   return res.json(jsonContent);
 });
 
-// app.get("/api/characters/:character", function(req, res) {
-//   var chosen = req.params.character;
-
-//   console.log(chosen);
-
-//   for (var i = 0; i < characters.length; i++) {
-//     if (chosen === characters[i].routeName) {
-//       return res.json(characters[i]);
-//     }
-//   }
-
-//   return res.json(false);
-// });
-
 app.post("/api/notes", function(req, res) {
   var newNote = req.body;
 
   console.log(newNote);
 
-  // characters.push(newcharacter);
-
-  // res.json(newcharacter);
+  res.send(newNote);
 });
 
 app.delete("/api/notes/:id", function(req, res) {
