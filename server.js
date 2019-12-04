@@ -61,11 +61,14 @@ app.delete("/api/notes/:id", function(req, res) {
 
       console.log(x);
 
-      fs.writeFileAsync(note_file, x, function (err)
-      {
-        if (err) throw err;
-        console.log("Saved!")
-      })
+      fs.writeFileAsync(note_file, x)
+        .then(function (err)
+          {
+            if (err) console.log(err);
+            console.log("Deleted!")
+            res.status(200).send()
+          }
+        )
     }
   )
 });
