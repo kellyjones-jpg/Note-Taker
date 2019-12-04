@@ -4,6 +4,10 @@ var app = express();
 var PORT = 3000;
 var fs = require("fs");
 var uuidv4 = require("uuid/v4");
+var util = require("util");
+
+fs.readFileAsync = util.promisify(fs.readFile);
+fs.writeFileAsync = util.promisify(fs.writeFile);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -18,7 +22,6 @@ function getAllNotes() {
 }
 
 function saveOneNote(addMe) {
-
   var temp_uuid = uuidv4();
   var all_notes = getAllNotes();
   addMe.id = temp_uuid;
@@ -31,6 +34,7 @@ function saveOneNote(addMe) {
 }
 
 app.get("/notes", function(req, res) {
+  console.log("notes route hit");
   res.sendFile(path.join(__dirname, "./public/notes.html"));
 });
 
@@ -39,23 +43,31 @@ app.get("/api/notes", function(req, res) {
 });
 
 app.post("/api/notes", function(req, res) {
-
   var saveNote = req.body;
-
   var isAdded = saveOneNote(saveNote);
 
   res.sendFile(path.join(__dirname, "./public/index.html"));
-
 });
 
 app.delete("/api/notes/:id", function(req, res) {
+  console.log(req.params.id)
 
+  fs.readFileAsync(note_file, 'utf8')
+   .then(function(data)
+    {
+      var x = JSON.parse(data);
+      x = x.filter(item => item.id != req.params.id);
+      x = JSON.stringify(x);
 
-  // funtion delete note
-  // pass an id number
-  // read file into json Object
-  // remove item from json array where value of id matches
-  // use a loop if matches if doesn't doesn't add
+      console.log(x);
+
+      fs.writeFileAsync(note_file, x, function (err)
+      {
+        if (err) throw err;
+        console.log("Saved!")
+      })
+    }
+  )
 });
 
 // wild card route goes at the bottom
