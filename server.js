@@ -1,7 +1,7 @@
 var express = require("express");
 var path = require("path");
 var app = express();
-var PORT = 3000;
+var PORT = process.env.PORT || 3000;
 var fs = require("fs");
 var uuidv4 = require("uuid/v4");
 var util = require("util");
